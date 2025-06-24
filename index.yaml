@@ -1,0 +1,12 @@
+apiVersion: v1
+entries:
+  canopy-ui:
+  - apiVersion: v2
+    created: "2025-06-24T20:11:12.133557295Z"
+    description: Canopy AI's frontend UI
+    digest: ccf81bf95bf0b1ea225adcae203db62fc1f259bb660c7312deefcd2e00e8243c
+    name: canopy-ui
+    urls:
+    - https://github.com/rhoai-genaiops/canopy-ui/releases/download/canopy-ui-0.0.2/canopy-ui-0.0.2.tgz
+    version: 0.0.2
+generated: "2025-06-24T20:11:12.133562414Z"
