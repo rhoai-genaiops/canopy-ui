@@ -1,4 +1,4 @@
 apiVersion: v2
 description: Canopy AI's frontend UI
 name: canopy-ui
-version: 0.0.3
+version: 0.0.1
