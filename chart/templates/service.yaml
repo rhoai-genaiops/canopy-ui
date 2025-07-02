@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: canopy-ai
+  name: canopy-ui
   labels:
-    app: canopy-ai
+    app: canopy-ui
 spec:
   selector:
-    app: canopy-ai
+    app: canopy-ui
   ports:
     - name: http
       port: 80

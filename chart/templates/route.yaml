@@ -2,13 +2,13 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: canopy-ai
+  name: canopy-ui
   labels:
-    app: canopy-ai
+    app: canopy-ui
 spec:
   to:
     kind: Service
-    name: canopy-ai
+    name: canopy-ui
     weight: 100
   port:
     targetPort: http

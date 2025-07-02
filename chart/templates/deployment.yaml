@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: canopy-ai
+  name: canopy-ui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: canopy-ai
+      app: canopy-ui
   template:
     metadata:
       labels:
-        app: canopy-ai
+        app: canopy-ui
     spec:
       containers:
-        - name: canopy-ai
-          image: quay.io/rlundber/canopy-ai:0.2
+        - name: canopy-ui
+          image: quay.io/rlundber/canopy-ui:0.2
           ports:
             - containerPort: 8501
           env:
