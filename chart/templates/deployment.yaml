@@ -20,8 +20,8 @@ spec:
             - containerPort: 8501
           env:
             - name: LLM_ENDPOINT
-              value: ""
+              value: "{{ .Values.LLM_ENDPOINT }}"
             - name: SYSTEM_PROMPT
-              value: "Summarize this text."
+              value: "{{ .Values.SYSTEM_PROMPT}}"
             - name: MODEL_NAME
-              value: "tinyllama"
+              value: "{{ .Values.MODEL_NAME }}"

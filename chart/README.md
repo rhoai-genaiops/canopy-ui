@@ -20,7 +20,7 @@ The following table lists the configurable parameters and their default values:
 |-----------|-------------|---------|
 | `LLM_ENDPOINT` | Language model endpoint URL | `""` |
 | `SYSTEM_PROMPT` | Default system prompt for the model | `"Summarize this text."` |
-| `MODEL_NAME` | Name of the model to use | `"tinyllama"` |
+| `MODEL_NAME` | Name of the model to use | `"llama32-full"` |
 
 ## Components
 
@@ -30,6 +30,6 @@ The following table lists the configurable parameters and their default values:
 
 ## Chart Information
 
-- **Version**: 0.0.5
+- **Version**: 1.0.0
 - **App Version**: 0.2
 - **Image**: `quay.io/rlundber/canopy-ui:0.2`

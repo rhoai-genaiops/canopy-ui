@@ -1,1 +1,4 @@
 ---
+SYSTEM_PROMPT: "Summarize this text." 
+MODEL_NAME: "llama32-full"
+LLM_ENDPOINT: ""
