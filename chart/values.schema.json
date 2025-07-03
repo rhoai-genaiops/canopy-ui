@@ -19,8 +19,32 @@
     "LLM_ENDPOINT": {
       "type": "string",
       "description": "Endpoint URL for the LLM service",
-      "default": "",
-      "format": "uri"
+      "default": ""
+    },
+    "BACKEND_ENDPOINT": {
+      "type": "string",
+      "description": "Endpoint URL for the backend service",
+      "default": ""
+    },
+    "image": {
+      "type": "object",
+      "description": "Container image configuration",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the container image",
+          "default": "canopy-ui",
+          "minLength": 1
+        },
+        "tag": {
+          "type": "string",
+          "description": "Tag of the container image",
+          "default": "latest",
+          "minLength": 1
+        }
+      },
+      "required": ["name", "tag"],
+      "additionalProperties": false
     }
   },
   "required": [

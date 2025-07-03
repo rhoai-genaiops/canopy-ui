@@ -1,3 +1,7 @@
 SYSTEM_PROMPT: "Summarize this text." 
 MODEL_NAME: "llama32-full"
-LLM_ENDPOINT: ""
+LLM_ENDPOINT: "http://localhost:8000"
+BACKEND_ENDPOINT: ""
+image:
+  name: "canopy-ui"
+  tag: "latest"
