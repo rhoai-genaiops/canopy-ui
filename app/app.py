@@ -36,31 +36,33 @@ st.sidebar.title("Canopy AI 🌿")
 # Get feature flags from backend
 feature_flags = get_feature_flags()
 
-# Show enabled features info in sidebar
-st.sidebar.markdown("### Available Features")
-enabled_features = []
+# Build feature options based on feature flags
+feature_options = []
 if feature_flags.get("summarization", True):
-    enabled_features.append("✅ Summarization")
+    feature_options.append("Summarization")
+else:
+    feature_options.append("Summarization (coming soon)")
+
 if feature_flags.get("rag-feature", False):
-    enabled_features.append("✅ RAG (Retrieval Augmented Generation)")
+    feature_options.append("RAG (Retrieval Augmented Generation)")
+else:
+    feature_options.append("RAG (coming soon)")
+
 if feature_flags.get("content-creation", False):
-    enabled_features.append("✅ Content Creation")
+    feature_options.append("Content Creation")
+else:
+    feature_options.append("Content Creation (coming soon)")
+
 if feature_flags.get("assignment-scoring", False):
-    enabled_features.append("✅ Assignment Scoring")
+    feature_options.append("Assignment Scoring")
+else:
+    feature_options.append("Assignment Scoring (coming soon)")
 
-# Show disabled features
-disabled_features = []
-if not feature_flags.get("rag-feature", False):
-    disabled_features.append("❌ RAG (coming soon)")
-if not feature_flags.get("content-creation", False):
-    disabled_features.append("❌ Content Creation (coming soon)")
-if not feature_flags.get("assignment-scoring", False):
-    disabled_features.append("❌ Assignment Scoring (coming soon)")
-
-for feature in enabled_features:
-    st.sidebar.markdown(feature)
-for feature in disabled_features:
-    st.sidebar.markdown(feature)
+feature = st.sidebar.radio(
+    "What do you want to do:",
+    feature_options,
+    index=0
+)
 
 # Main view depending on feature
 st.markdown("""
@@ -77,135 +79,127 @@ st.markdown("""
 
 st.markdown("---")
 
-# Show all enabled features
-if feature_flags.get("summarization", True):
-    st.header("🌱 Summarize My Text")
+if feature == "Summarization":
+    if not feature_flags.get("summarization", True):
+        st.info("This feature is coming soon. Stay tuned!")
+    else:
+        st.header("🌱 Summarize My Text")
 
-    # Token count and limit (approximate: 1 token ≈ 4 characters in English)
-    MAX_TOKENS = 4096  # Matching backend max_tokens
-    user_input = st.text_area("Paste your text here:", height=300, key="user_text")
-    approx_token_count = len(user_input) // 4
-    tokens_left = MAX_TOKENS - approx_token_count - 50  # buffer for response
+        # Token count and limit (approximate: 1 token ≈ 4 characters in English)
+        MAX_TOKENS = 4096  # Matching backend max_tokens
+        user_input = st.text_area("Paste your text here:", height=300, key="user_text")
+        approx_token_count = len(user_input) // 4
+        tokens_left = MAX_TOKENS - approx_token_count - 50  # buffer for response
 
-    color = "red" if tokens_left <= 0 else ("orange" if tokens_left < 100 else "green")
-    st.markdown(f"<p style='color:{color}; font-size: 0.9em;'>🧮 Tokens left: {tokens_left}</p>", unsafe_allow_html=True)
+        color = "red" if tokens_left <= 0 else ("orange" if tokens_left < 100 else "green")
+        st.markdown(f"<p style='color:{color}; font-size: 0.9em;'>🧮 Tokens left: {tokens_left}</p>", unsafe_allow_html=True)
 
-    if st.button("Summarize 🌿"):
-        if not user_input.strip():
-            st.warning("Please enter some text to summarize.")
-        elif not BACKEND_ENDPOINT:
-            st.error("BACKEND_ENDPOINT not configured in environment variables.")
-        elif tokens_left <= 0:
-            st.error("Your text is too long. Please shorten it to stay within the token limit.")
-        else:
-            with st.spinner("Talking to the forest spirits..."):
-                try:
-                    payload = {
-                        "prompt": user_input
-                    }
-                    headers = {
-                        "Content-Type": "application/json",
-                    }
+        if st.button("Summarize 🌿"):
+            if not user_input.strip():
+                st.warning("Please enter some text to summarize.")
+            elif not BACKEND_ENDPOINT:
+                st.error("BACKEND_ENDPOINT not configured in environment variables.")
+            elif tokens_left <= 0:
+                st.error("Your text is too long. Please shorten it to stay within the token limit.")
+            else:
+                with st.spinner("Talking to the forest spirits..."):
+                    try:
+                        payload = {
+                            "prompt": user_input
+                        }
+                        headers = {
+                            "Content-Type": "application/json",
+                        }
 
-                    with requests.post(
-                        urljoin(BACKEND_ENDPOINT, "/summarize"),
-                        json=payload,
-                        headers=headers,
-                        stream=True,
-                        timeout=120
-                    ) as response:
-                        response.raise_for_status()
-                        summary = ""
-                        st.success("Here's your summary:")
-                        summary_box = st.empty()
+                        with requests.post(
+                            urljoin(BACKEND_ENDPOINT, "/summarize"),
+                            json=payload,
+                            headers=headers,
+                            stream=True,
+                            timeout=120
+                        ) as response:
+                            response.raise_for_status()
+                            summary = ""
+                            st.success("Here's your summary:")
+                            summary_box = st.empty()
 
-                        for line in response.iter_lines():
-                            if line:
-                                line = line.decode("utf-8")
-                                if line.startswith("data: "):
-                                    data_str = line.removeprefix("data: ")
-                                    if data_str == "[DONE]":
-                                        break
-                                    data = json.loads(data_str)
-                                    delta = data.get("delta")
-                                    if delta:
-                                        summary += delta
-                                        summary_box.text_area("Summary", summary, height=200)
+                            for line in response.iter_lines():
+                                if line:
+                                    line = line.decode("utf-8")
+                                    if line.startswith("data: "):
+                                        data_str = line.removeprefix("data: ")
+                                        if data_str == "[DONE]":
+                                            break
+                                        data = json.loads(data_str)
+                                        delta = data.get("delta")
+                                        if delta:
+                                            summary += delta
+                                            summary_box.text_area("Summary", summary, height=200)
 
-                except Exception as e:
-                    st.error(f"Something went wrong: {e}")
+                    except Exception as e:
+                        st.error(f"Something went wrong: {e}")
 
-    st.markdown("---")
+elif feature == "RAG (Retrieval Augmented Generation)":
+    if not feature_flags.get("rag-feature", False):
+        st.info("This feature is coming soon. Stay tuned!")
+    else:
+        st.header("🔍 RAG - Retrieval Augmented Generation")
+        
+        # Token count and limit
+        MAX_TOKENS = 4096
+        user_input = st.text_area("Ask your question:", height=150, key="rag_text")
+        approx_token_count = len(user_input) // 4
+        tokens_left = MAX_TOKENS - approx_token_count - 50
 
-if feature_flags.get("rag-feature", False):
-    st.header("🔍 RAG - Retrieval Augmented Generation")
-    
-    # Token count and limit
-    MAX_TOKENS = 4096
-    user_input = st.text_area("Ask your question:", height=150, key="rag_text")
-    approx_token_count = len(user_input) // 4
-    tokens_left = MAX_TOKENS - approx_token_count - 50
+        color = "red" if tokens_left <= 0 else ("orange" if tokens_left < 100 else "green")
+        st.markdown(f"<p style='color:{color}; font-size: 0.9em;'>🧮 Tokens left: {tokens_left}</p>", unsafe_allow_html=True)
 
-    color = "red" if tokens_left <= 0 else ("orange" if tokens_left < 100 else "green")
-    st.markdown(f"<p style='color:{color}; font-size: 0.9em;'>🧮 Tokens left: {tokens_left}</p>", unsafe_allow_html=True)
+        if st.button("Ask RAG 🔍"):
+            if not user_input.strip():
+                st.warning("Please enter a question.")
+            elif not BACKEND_ENDPOINT:
+                st.error("BACKEND_ENDPOINT not configured in environment variables.")
+            elif tokens_left <= 0:
+                st.error("Your question is too long. Please shorten it to stay within the token limit.")
+            else:
+                with st.spinner("Searching through knowledge base..."):
+                    try:
+                        payload = {
+                            "prompt": user_input
+                        }
+                        headers = {
+                            "Content-Type": "application/json",
+                        }
 
-    if st.button("Ask RAG 🔍"):
-        if not user_input.strip():
-            st.warning("Please enter a question.")
-        elif not BACKEND_ENDPOINT:
-            st.error("BACKEND_ENDPOINT not configured in environment variables.")
-        elif tokens_left <= 0:
-            st.error("Your question is too long. Please shorten it to stay within the token limit.")
-        else:
-            with st.spinner("Searching through knowledge base..."):
-                try:
-                    payload = {
-                        "prompt": user_input
-                    }
-                    headers = {
-                        "Content-Type": "application/json",
-                    }
+                        with requests.post(
+                            urljoin(BACKEND_ENDPOINT, "/rag"),
+                            json=payload,
+                            headers=headers,
+                            stream=True,
+                            timeout=120
+                        ) as response:
+                            response.raise_for_status()
+                            answer = ""
+                            st.success("Here's your RAG answer:")
+                            answer_box = st.empty()
 
-                    with requests.post(
-                        urljoin(BACKEND_ENDPOINT, "/rag"),
-                        json=payload,
-                        headers=headers,
-                        stream=True,
-                        timeout=120
-                    ) as response:
-                        response.raise_for_status()
-                        answer = ""
-                        st.success("Here's your RAG answer:")
-                        answer_box = st.empty()
+                            for line in response.iter_lines():
+                                if line:
+                                    line = line.decode("utf-8")
+                                    if line.startswith("data: "):
+                                        data_str = line.removeprefix("data: ")
+                                        if data_str == "[DONE]":
+                                            break
+                                        data = json.loads(data_str)
+                                        delta = data.get("delta")
+                                        if delta:
+                                            answer += delta
+                                            answer_box.text_area("RAG Answer", answer, height=200)
 
-                        for line in response.iter_lines():
-                            if line:
-                                line = line.decode("utf-8")
-                                if line.startswith("data: "):
-                                    data_str = line.removeprefix("data: ")
-                                    if data_str == "[DONE]":
-                                        break
-                                    data = json.loads(data_str)
-                                    delta = data.get("delta")
-                                    if delta:
-                                        answer += delta
-                                        answer_box.text_area("RAG Answer", answer, height=200)
+                    except Exception as e:
+                        st.error(f"Something went wrong: {e}")
 
-                except Exception as e:
-                    st.error(f"Something went wrong: {e}")
-
-    st.markdown("---")
-
-if feature_flags.get("content-creation", False):
-    st.header("✍️ Content Creation")
-    st.info("Content creation feature is enabled but not yet implemented.")
-    st.markdown("---")
-
-if feature_flags.get("assignment-scoring", False):
-    st.header("📊 Assignment Scoring")
-    st.info("Assignment scoring feature is enabled but not yet implemented.")
-    st.markdown("---")
-
-# Show message if no features are enabled
-if not any(feature_flags.values()):
-    st.info("No features are currently enabled. Please contact your administrator.")
+elif feature in ["Content Creation", "Assignment Scoring"] or "coming soon" in feature:
+    st.info("This feature is coming soon. Stay tuned!")
+else:
+    st.info("This feature is coming soon. Stay tuned!")

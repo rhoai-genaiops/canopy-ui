@@ -1,4 +1,4 @@
-image: quay.io/rhoai-genaiops/canopy-ui:0.1
+image: quay.io/rhoai-genaiops/canopy-ui:0.2
 
 env:
-  BACKEND_ENDPOINT: "https://canopy-backend-genaiops-playground.apps.dev.rhoai.rh-aiservices-bu.com"
+  BACKEND_ENDPOINT: "http://localhost:8000"
