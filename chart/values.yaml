@@ -4,4 +4,6 @@ LLM_ENDPOINT: "http://localhost:8000"
 BACKEND_ENDPOINT: ""
 image:
   name: "canopy-ui"
-  tag: "latest"
+  tag: "simple-0.1"
+
+podman pull quay.io/rhoai-genaiops/canopy-ui
