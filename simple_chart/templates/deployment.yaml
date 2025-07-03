@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: canopy-ui
+  name: canopy-ui-simple
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: canopy-ui
+      app: canopy-ui-simple
   template:
     metadata:
       labels:
-        app: canopy-ui
+        app: canopy-ui-simple
     spec:
       containers:
-        - name: canopy-ui
+        - name: canopy-ui-simple
           image: {{ .Values.image }}
           ports:
             - containerPort: 8501
