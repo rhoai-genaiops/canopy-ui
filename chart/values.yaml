@@ -5,5 +5,3 @@ BACKEND_ENDPOINT: ""
 image:
   name: "canopy-ui"
   tag: "simple-0.1"
-
-podman pull quay.io/rhoai-genaiops/canopy-ui
