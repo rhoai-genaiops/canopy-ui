@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: canopy-ui
+  labels:
+    app: canopy-ui
+spec:
+  selector:
+    app: canopy-ui
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8501
+  type: ClusterIP

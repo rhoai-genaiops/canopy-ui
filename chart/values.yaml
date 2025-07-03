@@ -1,3 +1,4 @@
-SYSTEM_PROMPT: "Summarize this text." 
-MODEL_NAME: "llama32-full"
-LLM_ENDPOINT: ""
+image: quay.io/rhoai-genaiops/canopy-ui:0.1
+
+env:
+  BACKEND_ENDPOINT: "https://canopy-backend-genaiops-playground.apps.dev.rhoai.rh-aiservices-bu.com"

@@ -19,5 +19,9 @@ spec:
           ports:
             - containerPort: 8501
           env:
-            - name: BACKEND_ENDPOINT
-              value: "{{ .Values.env.BACKEND_ENDPOINT }}"
+            - name: LLM_ENDPOINT
+              value: "{{ .Values.LLM_ENDPOINT }}"
+            - name: SYSTEM_PROMPT
+              value: "{{ .Values.SYSTEM_PROMPT}}"
+            - name: MODEL_NAME
+              value: "{{ .Values.MODEL_NAME }}"
