@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  canopy-ui:
+  - apiVersion: v2
+    created: "2025-07-04T08:03:02.230817473Z"
+    description: Frontend for Canopy
+    digest: 72ff63d3aa332f40587f30f53298dc2755ff9ddc7790aa3b96121f8869dd5438
+    icon: https://www.svgrepo.com/show/396280/deciduous-tree.svg
+    name: canopy-ui
+    urls:
+    - https://github.com/rhoai-genaiops/canopy-ui/releases/download/canopy-ui-0.0.1/canopy-ui-0.0.1.tgz
+    version: 0.0.1
+generated: "2025-07-04T08:03:02.230839795Z"
