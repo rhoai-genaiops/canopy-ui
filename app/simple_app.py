@@ -14,7 +14,7 @@ MODEL_NAME = os.getenv("MODEL_NAME", "tinyllama")
 
 # Page setup
 st.set_page_config(
-    page_title="Canopy AI - Educational Assistant",
+    page_title="Canopy - Educational Assistant",
     page_icon="🌿",
     layout="wide",
 )
@@ -23,7 +23,7 @@ st.set_page_config(
 logo_path = "logo.png"
 logo = Image.open(logo_path)
 st.sidebar.image(logo, use_container_width=True)
-st.sidebar.title("Canopy AI 🌿")
+st.sidebar.title("Canopy 🌿")
 feature = st.sidebar.radio(
     "What do you want to do:",
     ["Summarization", "Content Creation (coming soon)", "Assignment Scoring (coming soon)"],
@@ -38,7 +38,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 st.markdown("""
     <div style='text-align: center;'>
-        <h1 style='color: #2e8b57;'>Canopy AI</h1>
+        <h1 style='color: #2e8b57;'>Canopy</h1>
         <p style='font-size: 1.2em;'>Your leafy smart companion for education ✨</p>
     </div>
 """, unsafe_allow_html=True)
