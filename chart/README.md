@@ -37,3 +37,4 @@ The following table lists the configurable parameters and their default values:
 - **Version**: 1.0.0
 - **App Version**: 0.2
 - **Image**: `quay.io/rlundber/canopy-ui:0.2`
+  
