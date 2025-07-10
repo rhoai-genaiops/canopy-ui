@@ -3,6 +3,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: canopy-ui
+  {{- if .Values.BACKEND_ENDPOINT}}
+  annotations:
+    app.openshift.io/connects-to: '[{"apiVersion":"apps/v1","kind":"Deployment","name":"canopy-backend"}]'
+  {{- end }}
 spec:
   replicas: 1
   selector:
@@ -15,9 +19,18 @@ spec:
     spec:
       containers:
         - name: canopy-ui
-          image: {{ .Values.image }}
+          image: quay.io/rhoai-genaiops/{{ .Values.image.name }}:{{ .Values.image.tag }}
           ports:
             - containerPort: 8501
           env:
+           {{- if not .Values.BACKEND_ENDPOINT}}
+            - name: LLM_ENDPOINT
+              value: "{{ .Values.LLM_ENDPOINT }}"
+            - name: SYSTEM_PROMPT
+              value: "{{ .Values.SYSTEM_PROMPT}}"
+            - name: MODEL_NAME
+              value: "{{ .Values.MODEL_NAME }}"
+          {{- else }}
             - name: BACKEND_ENDPOINT
-              value: "{{ .Values.env.BACKEND_ENDPOINT }}"
+              value: "{{ .Values.BACKEND_ENDPOINT }}"
+          {{- end }}

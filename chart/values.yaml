@@ -1,4 +1,14 @@
+<<<<<<< HEAD
 image: quay.io/rhoai-genaiops/canopy-ui:0.2
 
 env:
   BACKEND_ENDPOINT: "http://localhost:8000"
+=======
+SYSTEM_PROMPT: "Summarize this text." 
+MODEL_NAME: "llama32-full"
+LLM_ENDPOINT: "http://localhost:8000"
+BACKEND_ENDPOINT: ""
+image:
+  name: "canopy-ui"
+  tag: "simple-0.1"
+>>>>>>> origin/main
