@@ -57,7 +57,9 @@ if feature == "Summarization":
     tokens_left = MAX_TOKENS - approx_token_count - system_token_est - 50  # buffer for response
 
     color = "red" if tokens_left <= 0 else ("orange" if tokens_left < 100 else "green")
-    st.markdown(f"<p style='color:{color}; font-size: 0.9em;'>🧮 Tokens left: {tokens_left}</p>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:{color}; font-size: 0.9em;'>🧮 Tokens left: {tokens_left}</span>", unsafe_allow_html=True)
+    if st.button("🔄 Calculate tokens left", key="calc_tokens_sum", help="Calculate tokens"):
+        st.rerun()
 
     if st.button("Summarize 🌿"):
         if not user_input.strip():

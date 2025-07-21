@@ -9,6 +9,7 @@ from urllib.parse import urljoin
 BACKEND_ENDPOINT = os.getenv("BACKEND_ENDPOINT", "http://localhost:8000")
 
 # Cache feature flags to avoid repeated requests
+@st.cache_data(ttl=300)  # Cache for 5 minutes
 def get_feature_flags():
     """Fetch feature flags from backend"""
     try:
@@ -91,8 +92,12 @@ if feature == "Summarization":
         approx_token_count = len(user_input) // 4
         tokens_left = MAX_TOKENS - approx_token_count - 50  # buffer for response
 
+        # Token display with calculate button
         color = "red" if tokens_left <= 0 else ("orange" if tokens_left < 100 else "green")
-        st.markdown(f"<p style='color:{color}; font-size: 0.9em;'>🧮 Tokens left: {tokens_left}</p>", unsafe_allow_html=True)
+
+        st.markdown(f"<span style='color:{color}; font-size: 0.9em;'>🧮 Tokens left: {tokens_left}</span>", unsafe_allow_html=True)
+        if st.button("🔄 Calculate tokens left", key="calc_tokens_sum", help="Calculate tokens"):
+            st.rerun()
 
         if st.button("Summarize 🌿"):
             if not user_input.strip():
@@ -151,8 +156,11 @@ elif feature == "RAG (Retrieval Augmented Generation)":
         approx_token_count = len(user_input) // 4
         tokens_left = MAX_TOKENS - approx_token_count - 50
 
+        # Token display with calculate button
         color = "red" if tokens_left <= 0 else ("orange" if tokens_left < 100 else "green")
-        st.markdown(f"<p style='color:{color}; font-size: 0.9em;'>🧮 Tokens left: {tokens_left}</p>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:{color}; font-size: 0.9em;'>🧮 Tokens left: {tokens_left}</span>", unsafe_allow_html=True)
+        if st.button("🔄 Calculate tokens left", key="calc_tokens_rag", help="Calculate tokens"):
+            st.rerun()
 
         if st.button("Ask RAG 🔍"):
             if not user_input.strip():
