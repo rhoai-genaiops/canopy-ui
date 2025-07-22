@@ -1,5 +1,0 @@
-image: quay.io/rhoai-genaiops/canopy-ui:simple-0.1
-
-SYSTEM_PROMPT: "Summarize this text." 
-MODEL_NAME: "llama32"
-LLM_ENDPOINT: ""
